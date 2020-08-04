@@ -11,16 +11,16 @@ namespace MVVM_Example.ViewModel
     public class ApplicationViewModel : INotifyPropertyChanged
     {
 
-        private PhoneViewModel selectedPhone;
+        private Phone selectedPhone;
 
         private int selectedPhoneIndex;
 
-        private IFileService _fileService;
-        private IDialogService _dialogService;
+        private readonly IFileService _fileService;
+        private readonly IDialogService _dialogService;
         
-        public ObservableCollection<PhoneViewModel> Phones { get; set; }
+        public ObservableCollection<Phone> Phones { get; set; }
 
-        public PhoneViewModel SelectedPhone
+        public Phone SelectedPhone
         {
             get { return selectedPhone; }
             set
@@ -40,14 +40,14 @@ namespace MVVM_Example.ViewModel
         }
         
         // Command to save file
-        private RelayCommand saveCommand;
+        private RelayCommand _saveCommand;
 
         public RelayCommand SaveCommand
         {
             get
             {
-                return saveCommand ??
-                       (saveCommand = new RelayCommand(obj =>
+                return _saveCommand ??
+                       (_saveCommand = new RelayCommand(obj =>
                        {
                            try
                            {
@@ -69,14 +69,14 @@ namespace MVVM_Example.ViewModel
         }
         
         //Command to open file
-        private RelayCommand openCommand;
+        private RelayCommand _openCommand;
 
         public RelayCommand OpenCommand
         {
             get
             {
-                return openCommand ??
-                       (openCommand = new RelayCommand(obj =>
+                return _openCommand ??
+                       (_openCommand = new RelayCommand(obj =>
                        {
                            try
                            {
@@ -86,7 +86,7 @@ namespace MVVM_Example.ViewModel
                                    Phones.Clear();
                                    foreach (var phone in phones)
                                    {
-                                       Phones.Add(new PhoneViewModel(phone));
+                                       Phones.Add(phone);
                                    }
 
                                    _dialogService.ShowMessage("File opened");
@@ -101,14 +101,14 @@ namespace MVVM_Example.ViewModel
         }
 
         // Command to add new object
-        private RelayCommand addCommand;
+        private RelayCommand _addCommand;
 
         public RelayCommand AddCommand
         {
-            get { return addCommand ??
-                         (addCommand = new RelayCommand(obj =>
+            get { return _addCommand ??
+                         (_addCommand = new RelayCommand(obj =>
                          {
-                            PhoneViewModel phone = new PhoneViewModel(new Phone());
+                            Phone phone = new Phone();
                             Phones.Insert(0, phone);
                             SelectedPhone = phone;
                             
@@ -116,16 +116,16 @@ namespace MVVM_Example.ViewModel
         }
         
         // Command to delete the object
-        private RelayCommand removeCommand;
+        private RelayCommand _removeCommand;
 
         public RelayCommand RemoveCommand
         {
             get
             {
-                return removeCommand ??
-                       (removeCommand = new RelayCommand(obj =>
+                return _removeCommand ??
+                       (_removeCommand = new RelayCommand(obj =>
                            {
-                               PhoneViewModel phone = obj as PhoneViewModel;
+                               Phone phone = obj as Phone;
                                var selectedIndex = selectedPhoneIndex;
                                if (phone != null)
                                {
@@ -154,15 +154,16 @@ namespace MVVM_Example.ViewModel
             }
         }
 
-        private RelayCommand doubleCommand;
-        public RelayCommand DoubleCommand
+        //Command to create Phone record copy 
+        private RelayCommand _copyCommand;
+        public RelayCommand CopyCommand
         {
             get
             {
-                return doubleCommand ??
-                       (doubleCommand = new RelayCommand(obj =>
+                return _copyCommand ??
+                       (_copyCommand = new RelayCommand(obj =>
                        {
-                           PhoneViewModel phone = obj as PhoneViewModel;
+                           Phone phone = obj as Phone;
                            if (phone != null)
                            {
                                Phone phoneCopy = new Phone
@@ -172,7 +173,7 @@ namespace MVVM_Example.ViewModel
                                    Title = phone.Title
 
                                };
-                               Phones.Insert(0, new PhoneViewModel(phoneCopy));
+                               Phones.Insert(0, phoneCopy);
                            }
                        }));
             }
@@ -184,11 +185,11 @@ namespace MVVM_Example.ViewModel
             this._fileService = fileService;
             
             //Default data
-            Phones = new ObservableCollection<PhoneViewModel>
+            Phones = new ObservableCollection<Phone>
             {
-                new PhoneViewModel(new Phone {Title = "iPhone 10", Company = "Apple", Price = 100000}),
-                new PhoneViewModel(new Phone {Title = "Galaxy S100500 Edge", Company = "Samsung", Price = 110000}),
-                new PhoneViewModel(new Phone {Title = "Mi42S", Company = "Xiaomi", Price = 70000})
+                new Phone {Title = "iPhone 101", Company = "Apple", Price = 100000},
+                new Phone {Title = "Galaxy S100500 Edge", Company = "Samsung", Price = 110000},
+                new Phone {Title = "Mi42S", Company = "Xiaomi", Price = 70000}
             };
         }
         

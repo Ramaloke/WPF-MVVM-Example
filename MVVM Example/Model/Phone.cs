@@ -1,6 +1,6 @@
 namespace MVVM_Example.Model
 {
-    public class Phone
+    public sealed class Phone
     {
         public string Title { get; set; }
 
