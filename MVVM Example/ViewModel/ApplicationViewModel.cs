@@ -175,7 +175,8 @@ namespace MVVM_Example.ViewModel
                                };
                                Phones.Insert(0, phoneCopy);
                            }
-                       }));
+                       },
+                       (obj) => !(SelectedPhone is null)));
             }
         }
 
