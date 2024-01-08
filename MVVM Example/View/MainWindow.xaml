@@ -55,13 +55,7 @@
         <StackPanel Grid.Row="2" Orientation="Horizontal">
             <Button Command="{Binding AddCommand}">+</Button>
             <Button Command="{Binding RemoveCommand}" CommandParameter="{Binding SelectedPhone}">-</Button>
-            <Button Content="2x">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDoubleClick">
-                        <i:InvokeCommandAction Command="{Binding DoubleCommand}" CommandParameter="{Binding SelectedPhone}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Button>
+            <Button Command="{Binding CopyCommand}" CommandParameter="{Binding SelectedPhone}">Copy</Button>
         </StackPanel>
         
         <StackPanel Grid.Row="1" Grid.Column="1" DataContext="{Binding SelectedPhone}">
